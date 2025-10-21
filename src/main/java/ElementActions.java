@@ -45,6 +45,16 @@ public class ElementActions {
         uploadFile(uploadFile, filePath);
     }
 
+    @Test(priority = 5)
+    public void checkShadowDom() {
+        driver = new EdgeDriver();
+        maximize();
+        navigateTo("http://watir.com/examples/shadow_dom.html");
+        By root = By.id("shadow_host");
+        By by = By.cssSelector("[type='text']");
+        shadowDom(root, by).sendKeys("Ziad");
+    }
+
     public void navigateTo(String url) {
         driver.navigate().to(url);
     }
@@ -86,4 +96,15 @@ public class ElementActions {
         return driver.findElement(by).getText();
     }
 
+    public String getAttribute(By by, String attribute) {
+        return driver.findElement(by).getDomAttribute(attribute); //intial value only
+    }
+
+    public String getProperty(By by, String property) {
+        return driver.findElement(by).getDomProperty(property); //dynamic
+    }
+
+    public WebElement shadowDom(By root, By by) {
+        return driver.findElement(root).getShadowRoot().findElement(by);
+    }
 }
