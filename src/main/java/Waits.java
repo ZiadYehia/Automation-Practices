@@ -1,7 +1,6 @@
-import org.openqa.selenium.By;
-import org.openqa.selenium.WebDriver;
-import org.openqa.selenium.WebElement;
+import org.openqa.selenium.*;
 import org.openqa.selenium.edge.EdgeDriver;
+import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.support.ui.ExpectedConditions;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
@@ -19,7 +18,9 @@ public class Waits {
 
     @Test(priority = 1)
     public void startDriver() {
-        driver = new EdgeDriver();
+        driver = new EdgeDriver(new EdgeOptions() {{
+            setPageLoadStrategy(PageLoadStrategy.NONE);
+        }});
         maximize();
         navigateTo(url);
     }
@@ -46,6 +47,7 @@ public class Waits {
 
     @Test(priority = 2)
     public void fluentWaitTC() {
+        fluentWaitVisibilityOfElement(driver, startButton, 10L, 200L);
         clicking(startButton);
         fluentWaitVisibilityOfElement(driver, hiddenText, 10L, 200L);
         Assert.assertEquals(getText(hiddenText), "Hello World!");
@@ -100,6 +102,7 @@ public class Waits {
                 .withTimeout(Duration.ofSeconds(sec))
                 .pollingEvery(Duration.ofMillis(millis))
                 .withMessage("Element is not visible, Locator: " + by.toString())
+                .ignoring(NoSuchElementException.class)
                 .until(d -> driver.findElement(by).isDisplayed());
     }
 
