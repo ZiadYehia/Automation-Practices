@@ -3,6 +3,7 @@ import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.FluentWait;
 import org.openqa.selenium.support.ui.WebDriverWait;
 import org.testng.Assert;
 import org.testng.annotations.Test;
@@ -23,13 +24,34 @@ public class Waits {
         navigateTo(url);
     }
 
+/*
     @Test(priority = 2)
     public void implicitWait() {
         clicking(startButton);
-        explicitWaitVisibilityClickabilityOfElementUsingLamda(driver, hiddenText, 10L);
+        implicitWait(10L);
         Assert.assertEquals(getText(hiddenText), "Hello World!");
         System.out.println(getText(hiddenText));
     }
+
+
+    @Test(priority = 2)
+    public void explicitWait() {
+        clicking(startButton);
+        //explicitWaitVisibilityOfElement(driver,hiddenText,10L);
+        //explicitWaitVisibilityOfElementUsingLamda(driver,hiddenText,10L);
+        explicitWaitVisibilityClickabilityOfElementUsingLamda(driver, hiddenText, 10L);
+        Assert.assertEquals(getText(hiddenText), "Hello World!");
+        System.out.println(getText(hiddenText));
+    }*/
+
+    @Test(priority = 2)
+    public void fluentWaitTC() {
+        clicking(startButton);
+        fluentWaitVisibilityOfElement(driver, hiddenText, 10L, 200L);
+        Assert.assertEquals(getText(hiddenText), "Hello World!");
+        System.out.println(getText(hiddenText));
+    }
+
 
     public void maximize() {
         driver.manage().window().maximize();
@@ -71,6 +93,14 @@ public class Waits {
                     WebElement element = driver.findElement(by);
                     return element.isDisplayed() && element.isEnabled();
                 });
+    }
+
+    public void fluentWaitVisibilityOfElement(WebDriver driver, By by, Long sec, Long millis) {
+        new FluentWait<WebDriver>(driver)
+                .withTimeout(Duration.ofSeconds(sec))
+                .pollingEvery(Duration.ofMillis(millis))
+                .withMessage("Element is not visible, Locator: " + by.toString())
+                .until(d -> driver.findElement(by).isDisplayed());
     }
 
 }
