@@ -2,6 +2,7 @@ import org.openqa.selenium.*;
 import org.openqa.selenium.edge.EdgeDriver;
 import org.openqa.selenium.edge.EdgeOptions;
 import org.openqa.selenium.interactions.Actions;
+import org.openqa.selenium.remote.RemoteWebDriver;
 import org.openqa.selenium.support.ui.FluentWait;
 import org.testng.annotations.Test;
 
@@ -25,6 +26,11 @@ public class SeleniumActions {
     By imageDrag = By.cssSelector("[src='../Images/meme.jpg']");
     By imageDrop = By.id("dropZone");
     By homeTab = By.cssSelector("[href='../Pages/main.html'");
+    By sendDataTab = By.cssSelector("[href='sendData.html']");
+    By scrollTab = By.cssSelector("[href=\"scrolling.html\"]");
+    By firstName = By.id("first-name");
+    By lastName = By.id("last-name");
+    By scrollTextField = By.id("scroll_text");
 
 
     @Test(priority = 1)
@@ -75,6 +81,21 @@ public class SeleniumActions {
         holdAndRelease(imageDrag, imageDrop);
     }
 
+    @Test(priority = 8)
+    public void typingWithKeyboardTC() {
+        clicking(homeTab);
+        clicking(sendDataTab);
+        keyDownAllCapitalTyping(firstName, "ziad");
+        keyDownFirstCapitalTyping(lastName, "yehia");
+    }
+
+    @Test(priority = 9)
+    public void scrollingTC() {
+        clicking(homeTab);
+        clicking(scrollTab);
+        scrollToElement(scrollTextField);
+    }
+
     public void maximize() {
         driver.manage().window().maximize();
     }
@@ -120,6 +141,45 @@ public class SeleniumActions {
                 .moveToElement(locateElement(to))
                 .release()
                 .perform();
+    }
+
+    public void keyDownAllCapitalTyping(By by, String text) {
+        defaultFluentWaitExist(driver, by);
+        WebElement element = locateElement(by);
+        new Actions(driver)
+                .click(element)
+                .keyDown(Keys.SHIFT)
+                .sendKeys(text)
+                .keyUp(Keys.SHIFT)
+                .perform();
+    }
+
+    public void keyDownFirstCapitalTyping(By by, String text) {
+        defaultFluentWaitExist(driver, by);
+        WebElement element = locateElement(by);
+
+        String firstLetter = text.substring(0, 1);
+        String rest = text.substring(1);
+
+        new Actions(driver)
+                .click(element)
+                .keyDown(Keys.SHIFT)
+                .sendKeys(firstLetter)
+                .keyUp(Keys.SHIFT)
+                .sendKeys(rest)
+                .perform();
+    }
+
+    public void scrollToElement(By by) {
+        defaultFluentWaitExist(driver, by);
+        new Actions(driver)
+                .scrollToElement(locateElement(by))
+                .perform();
+    }
+
+
+    public void resetActions() {
+        ((RemoteWebDriver) driver).resetInputState();
     }
 
     public WebElement locateElement(By by) {
