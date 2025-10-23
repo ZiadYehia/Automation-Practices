@@ -18,6 +18,14 @@ public class SeleniumActions {
     By mouseActionTab = By.cssSelector("[href='mouse.html']");
     By rightClick = By.id("riClickBtn");
     By doubleClick = By.id("dblClickBtn");
+    By hover1 = By.cssSelector("[href='sendData.html']");
+    By hover2 = By.cssSelector("[href='scrolling.html']");
+    By hover3 = By.cssSelector("[href='Challenge.html']");
+    By dragdropTab = By.cssSelector("[href='dragDrop.html']");
+    By imageDrag = By.cssSelector("[src='../Images/meme.jpg']");
+    By imageDrop = By.id("dropZone");
+    By homeTab = By.cssSelector("[href='../Pages/main.html'");
+
 
     @Test(priority = 1)
     public void startDriver() {
@@ -36,9 +44,35 @@ public class SeleniumActions {
     }
 
     @Test(priority = 3)
+    public void hoverTC() {
+        hovering(hover1);
+        hovering(hover2);
+        hovering(hover3);
+    }
+
+    @Test(priority = 4)
     public void rightClickActionTC() {
         clicking(mouseActionTab);
         rightClickAction(rightClick);
+    }
+
+    @Test(priority = 5)
+    public void doubleClickActionTC() {
+        doubleClickAction(doubleClick);
+    }
+
+    @Test(priority = 6)
+    public void dragdropActionTC() {
+        clicking(homeTab);
+        clicking(dragdropTab);
+        dragdroping(imageDrag, imageDrop);
+    }
+
+    @Test(priority = 7)
+    public void holdReleaseActionTC() {
+        clicking(homeTab);
+        clicking(dragdropTab);
+        holdAndRelease(imageDrag, imageDrop);
     }
 
     public void maximize() {
@@ -62,6 +96,30 @@ public class SeleniumActions {
     public void rightClickAction(By by) {
         defaultFluentWaitExist(driver, by);
         new Actions(driver).contextClick(locateElement(by)).perform();
+    }
+
+    public void doubleClickAction(By by) {
+        defaultFluentWaitExist(driver, by);
+        new Actions(driver).doubleClick(locateElement(by)).perform();
+    }
+
+    public void hovering(By by) {
+        defaultFluentWaitExist(driver, by);
+        new Actions(driver).moveToElement(locateElement(by)).perform();
+    }
+
+    public void dragdroping(By drag, By drop) {
+        defaultFluentWaitExist(driver, drag);
+        new Actions(driver).dragAndDrop(locateElement(drag), locateElement(drop)).perform();
+    }
+
+    public void holdAndRelease(By from, By to) {
+        defaultFluentWaitExist(driver, from);
+        new Actions(driver)
+                .clickAndHold(locateElement(from))
+                .moveToElement(locateElement(to))
+                .release()
+                .perform();
     }
 
     public WebElement locateElement(By by) {
