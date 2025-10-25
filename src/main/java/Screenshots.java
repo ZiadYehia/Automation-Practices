@@ -15,7 +15,7 @@ public class Screenshots {
     String url = "https://www.google.com";
     String filePath = "src/main/resources";
 
-    By googleicon = By.cssSelector("[id=\"hplogo\"]");
+    By googleicon = By.cssSelector("[aria-label=\"Google\"]");
 
 
     @Test
@@ -46,7 +46,7 @@ public class Screenshots {
     }
 
     public void takeScreenshot(String path, String screenName) {
-        File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE);
+        File src = ((TakesScreenshot) driver).getScreenshotAs(OutputType.FILE); // (EdgeDriver)
         File dest = new File(System.getProperty("user.dir") + File.separator + path + File.separator + screenName);
         try {
             FileUtils.copyFile(src, dest);

@@ -13,7 +13,7 @@ public class BrowserActions {
     public void testCase() {
         driver = new EdgeDriver();
         maximize();
-        navigateTo("https://www.booking.com/");
+        navigateTo("https://demo.nopcommerce.com/nikon-d5500-dslr");
         getCurrentUrl();
         getTitle();
         getWindowHandle();
